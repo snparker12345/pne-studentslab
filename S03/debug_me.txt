@@ -1,0 +1,4 @@
+a division by zero error happened. this will always happen when c and d passed into function f
+are the same. this is because c and d are passed into function g, which subtracts them and
+returns the result. this result is assigned to the variable t1. then, t0/t1 is performed. if t1
+is 0 because the two values are equivalent, there will be a zero division error.
