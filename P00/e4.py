@@ -23,3 +23,5 @@ def seq_count_base():
         print("C:", dnanums.get("C"))
         print("T:", dnanums.get("T"))
         print("G:", dnanums.get("G"), "\n")
+
+seq_count_base()
