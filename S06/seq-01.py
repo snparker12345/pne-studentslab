@@ -1,6 +1,3 @@
-import termcolor
-
-
 class Seq:
     """A class for representing sequences"""
 
@@ -34,26 +31,10 @@ class Gene(Seq):
         print("New gene created")
 
 
-# seq_list = [Seq("ACT"), Seq("GATA"), Seq("CAGATA")]
+# --- Main program
+s1 = Seq("AGTACACTGGT")
+g = Gene("CGTAAC", "FRAT1")
 
-
-def print_seqs(seq_list, color):
-    for i, seq in enumerate(seq_list):
-        termcolor.cprint(f"Sequence {i}: (Length: {seq.len()}) {seq}", color)
-
-
-def generate_seqs(pat, num):
-    seq_list = []
-    for i in range(1, num + 1):
-        seq_list.append(Seq(pat * i))
-    return seq_list
-
-
-seq_list1 = generate_seqs("A", 3)
-seq_list2 = generate_seqs("AC", 5)
-
-termcolor.cprint("List 1:", "blue")
-print_seqs(seq_list1, "blue")
-
-termcolor.cprint("List 2:", "green")
-print_seqs(seq_list2, "green")
+# -- Printing the objects
+print(f"Sequence 1: {s1}")
+print(f"Gene: {g}")

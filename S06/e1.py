@@ -1,14 +1,17 @@
-import termcolor
-
-
 class Seq:
     """A class for representing sequences"""
 
     def __init__(self, strbases):
         # Initialize the sequence with the value
         # passed as argument when creating the object
-        self.strbases = strbases
-        print("New sequence created!")
+        self.sequence = strbases
+        self.valid_bases = {'A', 'C', 'G', 'T'}
+        if all(base in self.valid_bases for base in strbases):
+            print("New sequence created!")
+        else:
+            self.sequence = "ERROR"
+            print("ERROR!!")
+
 
     def __str__(self):
         """Method called when the object is being printed"""
@@ -33,27 +36,21 @@ class Gene(Seq):
         self.name = name
         print("New gene created")
 
-
-# seq_list = [Seq("ACT"), Seq("GATA"), Seq("CAGATA")]
-
-
-def print_seqs(seq_list, color):
-    for i, seq in enumerate(seq_list):
-        termcolor.cprint(f"Sequence {i}: (Length: {seq.len()}) {seq}", color)
+    def __str__(self):
+        """Print the Gene name along with the sequence"""
+        return self.name + "-" + self.strbases
 
 
-def generate_seqs(pat, num):
-    seq_list = []
-    for i in range(1, num + 1):
-        seq_list.append(Seq(pat * i))
-    return seq_list
+# --- Main program
+s1 = Seq("AGTACACTGGT")
+g = Gene("CGTAAC", "FRAT1")
+
+# -- Printing the objects
+print(f"Sequence 1: {s1}")
+print(f"Gene: {g}")
 
 
-seq_list1 = generate_seqs("A", 3)
-seq_list2 = generate_seqs("AC", 5)
-
-termcolor.cprint("List 1:", "blue")
-print_seqs(seq_list1, "blue")
-
-termcolor.cprint("List 2:", "green")
-print_seqs(seq_list2, "green")
+s1 = Seq("ACCTGC")
+s2 = Seq("Hello? Am I a valid sequence?")
+print(f"Sequence 1: {s1}")
+print(f"Sequence 2: {s2}")
