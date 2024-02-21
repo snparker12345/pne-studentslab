@@ -32,7 +32,7 @@ class Seq:
             return len(self.strbases)
 
     def count_base(self, base):
-        if self.__str__() == "ERROR":
+        if self.strbases is None or len(self.strbases) == 0:
             return 0
         else:
             return self.strbases.count(base)
@@ -48,11 +48,11 @@ class Seq:
 
     def reverse(self):
         if self.len() == 0:
-            return self.__str__()
+            return 'ERROR'
         else:
-            return self.strbases[::-1]
+            return self.seq[::-1]
 
-print("-----| Practice 1, Exercise 7 |------")
+print("-----| Practice 1, Exercise 6 |------")
 
 s1 = Seq()
 
@@ -62,10 +62,7 @@ s3 = Seq("Invalid sequence")
 
 print(f"Sequence 0: (Length: {s1.len()}) {s1}")
 print(f"  Bases: {s1.count()}")
-print(f"  Rev:   {s1.reverse()}")
 print(f"Sequence 1: (Length: {s2.len()}) {s2}")
 print(f"  Bases: {s2.count()}")
-print(f"  Rev:   {s2.reverse()}")
 print(f"Sequence 2: (Length: {s3.len()}) {s3}")
 print(f"  Bases: {s3.count()}")
-print(f"  Rev:   {s3.reverse()}")

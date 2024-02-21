@@ -15,10 +15,8 @@ class Seq:
 
     def __str__(self):
         """Method called when the object is being printed"""
-        if self.strbases is None:
-            return "NULL"
-        else:
-            return self.strbases
+        # -- We just return the string with the sequence
+        return self.strbases
 
     def len(self):
         """Calculate the length of the sequence"""
