@@ -1,0 +1,26 @@
+destination ip
+- 192.168.124.179
+- 212.128.255.129
+- 8.8.8.8
+- 10.1.128.39
+- 212.128.240.50
+- 192.30.255.112
+- 66.249.68.2
+
+name
+- self
+- f-l3208-pc01
+- Google
+- www.urjc.es
+- github.com
+- wikipedia.org
+- newdomain.com.au
+
+times
+- 0.020 ms
+- 5.6 ms
+- 0.26 ms
+- 2.4 ms
+- 0.4 ms
+- 6.3 ms
+- 0.9 ms

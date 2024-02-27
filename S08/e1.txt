@@ -1,0 +1,12 @@
+mobile
+- Interface: wire
+- Date: 27 febrero
+- Place: fuenla lab
+- IP: 10.1.152.56
+
+Lab computer
+- Interface: wifi
+- Date: 27 febrero
+- Place: fuenla lab
+- IP: 212.128.254.239
+
