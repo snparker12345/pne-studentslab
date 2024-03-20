@@ -66,27 +66,45 @@ while True:
         if msg.__eq__("PING"):
             response = "OK"
             print(f"{msg} command!")
+            send_bytes = str.encode(response)
+            # We must write bytes, not a string
+            ls.send(send_bytes)
             print("OK")
         elif splitted[0] == "GET":
             num = int(splitted[1])
             print("GET")
             print(seq_list[num])
+            send_bytes = str.encode(seq_list[num])
+            ls.send(send_bytes)
         elif splitted[0] == "INFO":
             split = Seq(splitted[1])
-            print(f"Sequence:{splitted[1]}")
-            print(f"Length: {split.len()}")
+            seq = f"Sequence:{splitted[1]}"
+            print(seq)
+            ls.send(str.encode(seq))
+            len = f"Length: {split.len()}"
+            print(len)
+            ls.send(str.encode(len))
             for base in "ATCG":
-                print(f"{base}: {split.count_base(base)}, ({split.count_base(base) / split.len() * 100}%)")
+                bases = f"{base}: {split.count_base(base)}, ({split.count_base(base) / split.len() * 100}%)"
+                print(bases)
+                ls.send(str.encode(bases))
         elif splitted[0] == "COMP":
             split = Seq(splitted[1])
-            print(split.complement())
+            sl = split.complement()
+            print(sl)
+            ls.send(str.encode(sl))
         elif splitted[0] == "REV":
             split = Seq(splitted[1])
-            print(split.reverse())
+            rev = split.reverse()
+            print(rev)
+            ls.send(str.encode(rev))
         elif splitted[0] == "GENE":
             split = Seq()
+            gene = split.__str__()
             split.read_fasta(splitted[1])
-            print(split.__str__())
+            print(gene)
+            ls.send(gene)
+
 
 
 
