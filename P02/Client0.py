@@ -16,7 +16,7 @@ class Client:
 
     def talk(self, msg):
         # -- Create the socket
-        port = self.port
+
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
         # establish the connection to the Server (IP, PORT)
