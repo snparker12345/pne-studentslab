@@ -1,10 +1,14 @@
 import socket
+from Client0 import Client
+
+from Seq0 import Seq
 
 # -- Step 1: create the socket
 ls = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 # -- Optional: This is for avoiding the problem of Port already in use
 ls.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+
 
 # Configure the Server's IP and PORT
 PORT = 8080
@@ -17,6 +21,11 @@ ls.bind((IP, PORT))
 ls.listen()
 
 print("The server is configured!")
+
+s1 = Seq()
+s1.read_fasta("ADA.txt")
+seq_list = ["ACT", "GATA", "CAGATA", "BCC"]
+
 
 while True:
     # -- Waits for a client to connect
@@ -48,13 +57,41 @@ while True:
         msg = msg_raw.decode()
 
         # -- Print the received message
-        print(f"Message received: {msg}")
+        msg = msg.strip()
 
-        # -- Prepare the echo response
-        echo_response = "ECHO: " + msg
+
+        msg = msg.strip()
+        response = ""
+        splitted = msg.split()
+        if msg.__eq__("PING"):
+            response = "OK"
+            print(f"{msg} command!")
+            print("OK")
+        elif splitted[0] == "GET":
+            num = int(splitted[1])
+            print("GET")
+            print(seq_list[num])
+        elif splitted[0] == "INFO":
+            split = Seq(splitted[1])
+            print(f"Sequence:{splitted[1]}")
+            print(f"Length: {split.len()}")
+            for base in "ATCG":
+                print(f"{base}: {split.count_base(base)}, ({split.count_base(base) / split.len() * 100}%)")
+        elif splitted[0] == "COMP":
+            split = Seq(splitted[1])
+            print(split.complement())
+        elif splitted[0] == "REV":
+            split = Seq(splitted[1])
+            print(split.reverse())
+        elif splitted[0] == "GENE":
+            split = Seq()
+            split.read_fasta(splitted[1])
+            print(split.__str__())
+
+
 
         # -- The message has to be encoded into bytes
-        cs.send(echo_response.encode())
+        cs.send(response.encode())
 
         # -- Close the data socket
         cs.close()
