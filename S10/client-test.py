@@ -6,7 +6,7 @@ import socket
 # Write here the correct parameter for connecting to the
 # Teacher's server
 PORT = 8080
-IP = "212.128.255.67" # it depends on the machine the server is running
+IP = "127.0.0.1" # it depends on the machine the server is running
 client = Client(IP, PORT)
 
 try:

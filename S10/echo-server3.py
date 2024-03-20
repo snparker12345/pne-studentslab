@@ -8,7 +8,7 @@ ls.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
 # Configure the Server's IP and PORT
 PORT = 8080
-IP = "212.128.255.67"
+IP = "127.0.0.1"
 
 # -- Step 2: Bind the socket to server's IP and PORT
 ls.bind((IP, PORT))

@@ -3,11 +3,11 @@ from Seq1 import Seq
 
 print("-----| Practice 2, Exercise 6 |------")
 
-IP = "212.128.255.66" # your IP address
+IP = "127.0.0.1" # your IP address
 PORT = 8080
 c = Client(IP, PORT)
 
-IP = "212.128.255.66" # your IP address
+IP = "127.0.0.1" # your IP address
 PORT2 = 8081
 c2 = Client(IP, PORT2)
 print(c2.__str__())
