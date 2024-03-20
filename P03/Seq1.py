@@ -6,6 +6,11 @@ import termcolor
 class Seq:
     """A class for representing sequences"""
 
+    def count_base(self, base):
+        if self.strbases is None or len(self.strbases) == 0:
+            return 0
+        else:
+            return self.strbases.count(base)
     def __init__(self, strbases=None):
         if strbases is None:
             print("NULL sequence created")
@@ -34,6 +39,39 @@ class Seq:
         except FileNotFoundError:
             print("File not found.")
         return self
+
+    def seq_ping(self):
+        print("OK")
+
+
+    def seq_reverse(seq):
+        # f = "../sequences/" + seq
+        # # -- Open and read the file
+        # file_contents = Path(f).read_text()
+        # file_contents = file_contents[file_contents.index('\n') + 1:]
+        # file_contents = file_contents.replace("\n", "")
+        # file_contents = file_contents[:20]
+        # print("Fragment:", seq)
+        revers = seq[::-1]
+        # print("Reverse:", revers)
+        return revers
+
+    def seq_complement(seq):
+        # f = "../sequences/" + seq
+        # # -- Open and read the file
+        # file_contents = Path(f).read_text()
+        # file_contents = file_contents[file_contents.index('\n') + 1:]
+        # file_contents = file_contents.replace("\n", "")
+        # file_contents = file_contents[:num]
+        # print("Frag:", seq)
+        seq = seq.replace('A', 't')
+        seq = seq.replace('T', 'A')
+        seq = seq.replace('G', 'c')
+        seq = seq.replace('C', 'G')
+        seq = seq.upper()
+        return seq
+
+
 
 
 class Gene(Seq):
