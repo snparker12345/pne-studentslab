@@ -1,0 +1,2 @@
+1. GET /favicon.ico HTTP/1.1
+2. I am the green server
