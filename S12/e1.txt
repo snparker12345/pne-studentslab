@@ -1,2 +1,11 @@
-1. GET /favicon.ico HTTP/1.1
-2. I am the green server
+link 1:
+1. GET /favicon.ico HTTP/1.1, /hello HTTP/1.1
+2. /hello
+
+link 2:
+1. GET /favicon.ico HTTP/1.1, GET /file.html HTTP/1.1
+2. /file.html
+
+link 3:
+1. GET /hi/there?name=virus&type=corona HTTP/1.1
+2. /hi/there?name=virus&type=corona
