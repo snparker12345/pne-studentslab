@@ -29,9 +29,21 @@ def process_client(cs):
             content = f.read()
         # Send HTTP response with A.html content
         response_msg = "HTTP/1.1 200 OK\nContent-Type: text/html\nContent-Length: {}\n\n".format(len(content)).encode() + content
+    elif req_line.startswith("GET /info/T"):
+        with open('html/info/T.html', 'rb') as f:
+            content = f.read()
+        # Send HTTP response with A.html content
+        response_msg = "HTTP/1.1 200 OK\nContent-Type: text/html\nContent-Length: {}\n\n".format(len(content)).encode() + content
+    elif req_line.startswith("GET /info/G"):
+        with open('html/info/G.html', 'rb') as f:
+            content = f.read()
+        # Send HTTP response with A.html content
+        response_msg = "HTTP/1.1 200 OK\nContent-Type: text/html\nContent-Length: {}\n\n".format(len(content)).encode() + content
     else:
-        # For any other request, send a blank response
-        response_msg = "HTTP/1.1 200 OK\nContent-Length: 0\n\n".encode()
+        with open('error.html', 'rb') as f:
+            content = f.read()
+        # Send HTTP response with A.html content
+        response_msg = "HTTP/1.1 200 OK\nContent-Type: text/html\nContent-Length: {}\n\n".format(len(content)).encode() + content
 
     # Send the response message back to the client
     cs.send(response_msg)

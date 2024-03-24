@@ -20,12 +20,12 @@ def process_client(cs):
 
     # Check if the request is for /info/A
     if req_line.startswith("GET /info/A"):
-        with open('info/A.html', 'rb') as f:
+        with open('html/info/A.html', 'rb') as f:
             content = f.read()
         # Send HTTP response with A.html content
         response_msg = "HTTP/1.1 200 OK\nContent-Type: text/html\nContent-Length: {}\n\n".format(len(content)).encode() + content
     if req_line.startswith("GET /info/A"):
-        with open('info/A.html', 'rb') as f:
+        with open('html/info/A.html', 'rb') as f:
             content = f.read()
         # Send HTTP response with A.html content
         response_msg = "HTTP/1.1 200 OK\nContent-Type: text/html\nContent-Length: {}\n\n".format(len(content)).encode() + content
