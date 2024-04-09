@@ -2,6 +2,7 @@ import http.server
 import socketserver
 import termcolor
 from pathlib import Path
+import jinja2 as j
 
 # Define the Server's port
 PORT = 8080
@@ -12,6 +13,13 @@ socketserver.TCPServer.allow_reuse_address = True
 
 # Class with our Handler. It is a called derived from BaseHTTPRequestHandler
 # It means that our class inheritates all his methods and properties
+
+
+def read_html_file(filename):
+    contents = Path("html/" + filename).read_text()
+    contents = j.Template(contents)
+    return contents
+
 class TestHandler(http.server.BaseHTTPRequestHandler):
 
     def do_GET(self):
@@ -22,7 +30,19 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
         termcolor.cprint(self.requestline, 'green')
         contents = ""
         path = self.path
-        if path == "/":
+        if path.__contains__("/echo?msg="):
+            from urllib.parse import parse_qs, urlparse
+            url_path = urlparse(self.path)
+
+            path = url_path.path  # we get it from here
+            arguments = parse_qs(url_path.query)
+            text = arguments.get('msg')[0]
+            checked = arguments.get("chk")
+            if checked:
+                text = text.upper()
+            contents = read_html_file("echo.html").render(context={"todisplay": text})
+
+        elif path == "/":
             # Open the form1.html file
             # Read the index from the file
             contents = Path('html/form-1.html').read_text()
@@ -51,7 +71,7 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
 Handler = TestHandler
 
 # -- Open the socket server
-with socketserver.TCPServer(("", PORT), Handler) as httpd:
+with socketserver.TCPServer(("127.0.0.1", PORT), Handler) as httpd:
     print("Serving at PORT", PORT)
 
     # -- Main loop: Attend the client. Whenever there is a new
@@ -62,3 +82,6 @@ with socketserver.TCPServer(("", PORT), Handler) as httpd:
         print("")
         print("Stopped by the user")
         httpd.server_close()
+
+
+

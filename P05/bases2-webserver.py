@@ -37,8 +37,6 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
             file = open(path)
             contents = file.read()
 
-
-
         # Generating the response message
         self.send_response(200)  # -- Status line: OK!
 
@@ -62,7 +60,7 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
 Handler = TestHandler
 
 # -- Open the socket server
-with socketserver.TCPServer(("", PORT), Handler) as httpd:
+with socketserver.TCPServer(("127.0.0.1", PORT), Handler) as httpd:
     print("Serving at PORT", PORT)
 
     # -- Main loop: Attend the client. Whenever there is a new
