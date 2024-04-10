@@ -40,12 +40,10 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
         if self.path.__contains__("myserver?ping="):
             contents = Path('html/ping.html').read_text()
             # we get it from here
-        elif self.path.__contains__("myserver?operation="):
+        elif self.path.__contains__("sequence-button"):
             arguments = parse_qs(url_path.query)
             arg = arguments.get("operation")[0]
-
             file_contents = Path("../sequences/ADA.txt").read_text().split("\n")
-
             if (arg == "zero"):
                 num = 0
                 text = file_contents[1]
@@ -63,6 +61,14 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
                 num = 4
                 text = file_contents[5]
             contents = read_html_file("get.html").render(context={"todisplay": text, "otherdisplay": num})
+        elif self.path.__contains__("gene-button"):
+            arguments = parse_qs(url_path.query)
+            arg = arguments.get("gene")[0]
+            source = arg + ".txt"
+            contents = Path("../sequences/" + source).read_text()
+            lines = contents.split('\n')
+            text = '\n'.join(lines[1:])
+            contents = read_html_file("get.html").render(context={"todisplay": text, "otherdisplay": arg})
         elif path == "/":
             # Open the form1.html file
             # Read the index from the file
