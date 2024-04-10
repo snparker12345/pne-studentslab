@@ -69,6 +69,12 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
             lines = contents.split('\n')
             text = '\n'.join(lines[1:])
             contents = read_html_file("get.html").render(context={"todisplay": text, "otherdisplay": arg})
+        elif self.path.__contains__("perform"):
+            arguments = parse_qs(url_path.query)
+            arg = arguments.get("gene")[0]
+            
+            
+            qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqcontents = read_html_file("get.html").render(context={"todisplay": text, "otherdisplay": arg})
         elif path == "/":
             # Open the form1.html file
             # Read the index from the file
