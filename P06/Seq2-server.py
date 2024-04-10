@@ -3,12 +3,14 @@ import socketserver
 import termcolor
 from pathlib import Path
 import jinja2 as j
+from Seq1 import Seq
 
 # Define the Server's port
 PORT = 8080
 
 # -- This is for preventing the error: "Port already in use"
 socketserver.TCPServer.allow_reuse_address = True
+
 
 
 # Class with our Handler. It is a called derived from BaseHTTPRequestHandler
@@ -29,18 +31,42 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
         # Print the request line
         termcolor.cprint(self.requestline, 'green')
         contents = ""
+
         path = self.path
         from urllib.parse import parse_qs, urlparse
         url_path = urlparse(self.path)
         path = url_path.path
-        print(path)
-        if path == "/echo.html":
-            contents = Path('html/echo.html').read_text()
+        print("self path", self.path)
+        if self.path.__contains__("myserver?ping="):
+            contents = Path('html/ping.html').read_text()
             # we get it from here
+        elif self.path.__contains__("myserver?operation="):
+            arguments = parse_qs(url_path.query)
+            arg = arguments.get("operation")[0]
+
+            file_contents = Path("../sequences/ADA.txt").read_text().split("\n")
+
+            if (arg == "zero"):
+                num = 0
+                text = file_contents[1]
+                print(text)
+            elif(arg == "one"):
+                num = 1
+                text = file_contents[2]
+            elif(arg == "two"):
+                num = 2
+                text = file_contents[3]
+            elif (arg == "three"):
+                num = 3
+                text = file_contents[4]
+            elif (arg == "four"):
+                num = 4
+                text = file_contents[5]
+            contents = read_html_file("get.html").render(context={"todisplay": text, "otherdisplay": num})
         elif path == "/":
             # Open the form1.html file
             # Read the index from the file
-            contents = Path('html/form-1.html').read_text()
+            contents = Path('html/index.html').read_text()
         else:
             contents = Path('html/error.html').read_text()
         # Generating the response message

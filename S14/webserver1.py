@@ -11,7 +11,7 @@ socketserver.TCPServer.allow_reuse_address = True
 Handler = http.server.SimpleHTTPRequestHandler
 
 # -- Open the socket server
-with socketserver.TCPServer(("", PORT), Handler) as httpd:
+with socketserver.TCPServer(("127.0.0.1", PORT), Handler) as httpd:
 
     print("Serving at PORT", PORT)
 
