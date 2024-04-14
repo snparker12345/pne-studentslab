@@ -76,7 +76,8 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
             if op == "info":
                 bases = "Total Length: " + str(seq.__len__()) + "\n"
                 for base in "ATCG":
-                    bases += f"{base}: {newSeq.count_base(base)}, ({newSeq.count_base(base) / newSeq.len() * 100}%)\n"
+                    bases += "\n"
+                    bases += f"{base}: {newSeq.count_base(base)}, ({newSeq.count_base(base) / newSeq.len() * 100}%)"
                 res = bases
             elif op == "comp":
                 res = newSeq.seq_complement(seq)
