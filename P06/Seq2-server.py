@@ -12,7 +12,6 @@ PORT = 8080
 socketserver.TCPServer.allow_reuse_address = True
 
 
-
 # Class with our Handler. It is a called derived from BaseHTTPRequestHandler
 # It means that our class inheritates all his methods and properties
 
@@ -21,6 +20,7 @@ def read_html_file(filename):
     contents = Path("html/" + filename).read_text()
     contents = j.Template(contents)
     return contents
+
 
 class TestHandler(http.server.BaseHTTPRequestHandler):
 
@@ -47,11 +47,10 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
             if (arg == "zero"):
                 num = 0
                 text = file_contents[1]
-                print(text)
-            elif(arg == "one"):
+            elif (arg == "one"):
                 num = 1
                 text = file_contents[2]
-            elif(arg == "two"):
+            elif (arg == "two"):
                 num = 2
                 text = file_contents[3]
             elif (arg == "three"):
@@ -71,10 +70,20 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
             contents = read_html_file("get.html").render(context={"todisplay": text, "otherdisplay": arg})
         elif self.path.__contains__("perform"):
             arguments = parse_qs(url_path.query)
-            arg = arguments.get("gene")[0]
-            
-            
-            qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqcontents = read_html_file("get.html").render(context={"todisplay": text, "otherdisplay": arg})
+            op = arguments.get("base")[0]
+            seq = arguments.get("msg")[0]
+            newSeq = Seq(seq)
+            if op == "info":
+                bases = ""
+                for base in "ATCG":
+                    bases += f"{base}: {newSeq.count_base(base)}, ({newSeq.count_base(base) / newSeq.len() * 100}%)"
+                res = bases
+            elif op == "comp":
+                res = newSeq.seq_complement(seq)
+            elif op == "rev":
+                res = newSeq.seq_reverse(seq)
+            contents = read_html_file("operation.html").render(
+                context={"sequence": seq, "operation": op, "result": res})
         elif path == "/":
             # Open the form1.html file
             # Read the index from the file
@@ -115,6 +124,3 @@ with socketserver.TCPServer(("127.0.0.1", PORT), Handler) as httpd:
         print("")
         print("Stopped by the user")
         httpd.server_close()
-
-
-

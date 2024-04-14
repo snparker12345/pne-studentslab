@@ -44,7 +44,7 @@ class Seq:
     def seq_ping(self):
         print("OK")
 
-    def seq_reverse(seq):
+    def seq_reverse(self, seq):
         # f = "../sequences/" + seq
         # # -- Open and read the file
         # file_contents = Path(f).read_text()
@@ -56,7 +56,7 @@ class Seq:
         # print("Reverse:", revers)
         return revers
 
-    def seq_complement(seq):
+    def seq_complement(self, seq):
         # f = "../sequences/" + seq
         # # -- Open and read the file
         # file_contents = Path(f).read_text()
