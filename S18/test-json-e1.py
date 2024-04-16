@@ -9,12 +9,11 @@ jsonstring = Path("people-e1.json").read_text()
 people = {}
 # Create the object person from the json string
 people = json.loads(jsonstring)
-
+print("total number of people:", len(people))
 # Person is now a dictionary. We can read the values
 # associated to the fields 'Firstname', 'Lastname' and 'age'
 for person in people:
 # Print the information on the console, in colors
-    print()
     termcolor.cprint("Name: ", 'green', end="")
     print(person['Firstname'], person['Lastname'])
     termcolor.cprint("Age: ", 'green', end="")
