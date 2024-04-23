@@ -2,24 +2,26 @@ import http.client
 import json
 import termcolor
 from pydoc import html
-
+from Seq0 import *
 from P03.Seq0 import Seq
 
 genes_list = {'FRAT1':'ENSG00000165879', 'ADA':'ENSG00000196839', 'FXN':"ENSG00000165060", 'RNU6_269P':"ENSG00000212379", 'MIR633':"ENSG00000207552", 'TTTY4C':"ENSG00000228296", 'RBMY2YP':"ENSG00000227633", 'FGFR3':"ENSG00000068078", 'KDR':"ENSG00000128052", 'ANK2':"ENSG00000145362"}
 
-gene = input("enter a gene:")
-id = genes_list[gene]
 
-if gene in genes_list:
+
+
+for gene in genes_list:
+    id = genes_list[gene]
+
     SERVER = 'rest.ensembl.org'
     ENDPOINT = '/sequence/id/'
     PARAMS = '?content-type=application/json'
-    REQUEST = ENDPOINT + id + PARAMS
-    URL = SERVER + ENDPOINT + id + PARAMS
+    print(f"Server: {SERVER}")
+    request = ENDPOINT + id + PARAMS
+    url = SERVER + ENDPOINT + id + PARAMS
 
     print()
-    print(f"Server: {SERVER}")
-    print(f"URL: {URL}")
+
 
     # Connect with the server
     conn = http.client.HTTPConnection(SERVER)
@@ -27,7 +29,7 @@ if gene in genes_list:
     # -- Send the request message, using the GET method. We are
     # -- requesting the main page (/)
     try:
-        conn.request("GET", REQUEST)
+        conn.request("GET", request)
     except ConnectionRefusedError:
         print("ERROR! Cannot connect to the Server")
         exit()
@@ -60,9 +62,6 @@ if gene in genes_list:
             dnanums[letter] = val
     key_max = max(zip(dnanums.values(), dnanums.keys()))[1]
     print("Most frequent Base:", key_max)
-
-else:
-    print("error")
     #pinged = response.__contains__("ping: 1")
 
 
