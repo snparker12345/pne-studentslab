@@ -8,6 +8,8 @@ SERVER = 'localhost'
 
 print(f"\nConnecting to server: {SERVER}:{PORT}\n")
 
+
+
 # Connect with the server
 conn = http.client.HTTPConnection(SERVER, PORT)
 
