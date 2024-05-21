@@ -6,9 +6,12 @@
     <title>Species List</title>
 </head>
 <body>
-    <h1>Species List</h1>
+    <p>The names of the species are:</p>
     <ul>
-        {species_list}
+        {{context.species}}
     </ul>
+    <p>The total number of species in the ensembl is: {{context.num}}</p>
+    <p>The number you have selected is: {{context.limit}}</p>
+
 </body>
 </html>

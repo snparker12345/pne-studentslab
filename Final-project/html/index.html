@@ -7,21 +7,21 @@
     <h2>Basic level services</h2>
 </head>
 <body>
-    <form action="/listSpecies" method="get">
+    <form action="listSpecies" method="get">
         <p>1) List of species in the genome database</p>
-        <p>Limit: <input name="limit" type="number"></p>
+        <p>Limit: <input name="limit"></p>
         <button type="submit">Send</button>
     </form>
 
     <form action="/karyotype" method="get">
         <p>2) Information about the karyotype</p>
-        <p>Select the species: <input name="species"></p>
+        <p>Select the species: <input name="speciesK"></p>
         <button type="submit">Send</button>
     </form>
 
     <form action="/chromosomeLength" method="get">
         <p>3) Chromosome Length</p>
-        <p>Select the species: <input name="species"></p>
+        <p>Select the species: <input name="speciesL"></p>
         <p>Select the chromosome: <input name="chromosome"></p>
         <button type="submit">Send</button>
     </form>
