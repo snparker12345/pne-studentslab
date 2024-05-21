@@ -10,8 +10,8 @@ SERVER = 'rest.ensembl.org'
 ENDPOINT = '/info/species/'
 PARAMS = '?content-type=application/json'
 print(f"Server: {SERVER}")
-request = ENDPOINT + id + PARAMS
-url = SERVER + ENDPOINT + id + PARAMS
+request = ENDPOINT + PARAMS
+url = SERVER + ENDPOINT + PARAMS
 
 print()
 
@@ -35,7 +35,7 @@ print(f"Response received!: {r1.status} {r1.reason}\n")
     # -- Read the response's body
 response = json.loads(r1.read().decode("utf-8"))
 
-species_data = response.json()['species']
+species_data = response['species']
 
 species_names = [species["name"] for species in species_data]
 
