@@ -314,15 +314,19 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
             contents = read_html_file("gene_info.html").render(context={"start": start, "end": end, "length": length, "chromosome": chromosome, "id":gotten_gene})
 
         elif self.path.__contains__("geneCalc"):
+            bases = {}
             arguments = parse_qs(url_path.query)
-            gene_to_get = arguments.get("geneI")[0]
+            gene_to_get = arguments.get("geneC")[0]
             gotten_gene = get_gene(gene_to_get)
             seq = get_seq(gotten_gene)
+            s = Seq(seq)
             length = len(seq)
+            i = 0
             for base in "ATCG":
-                bases = f"{base}: {seq.count_base(base)}, ({seq.count_base(base) / seq.len() * 100}%)"
-
-
+                bases[i] = f"{base}: {s.count_base(base)}, ({s.count_base(base) / s.len() * 100}%)"
+                i += 1
+            contents = read_html_file("gene_calc.html").render(
+                context={"seqLen": length, "countBase": bases})
         elif path == "/":
             # Open the form1.html file
             # Read the index from the file
