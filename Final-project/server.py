@@ -158,6 +158,8 @@ def get_gene(gene):
     else:
     # -- Read the response's body
         response = json.loads(r1.read().decode("utf-8"))
+        if response is None or len(response) == 0:
+            return None
         gene_name = response[0]
         gotten_gene = gene_name.get("id")
         if gotten_gene is None:
@@ -227,6 +229,8 @@ def get_gene_info(gene):
     else:
         # -- Read the response's body
         response = json.loads(r1.read().decode("utf-8"))
+        if response is None:
+            return None
         start = response.get('start')
         end = response.get('end')
         chrom = response.get('seq_region_name')
@@ -250,28 +254,39 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
         print("self path", self.path)
 
         if self.path.__contains__("listSpecies"):
+            limit = None
             arguments = parse_qs(url_path.query)
-            limit = arguments.get("limit")[0]
+            if len(arguments) > 0:
+                limit = arguments.get("limit")[0]
             species = get_species()
-            if species is None:
+            num = True
+            if limit is not None:
+                try:
+                    int(limit)
+                except ValueError:
+                    num = False
+            if species is None or num is False:
                 contents = Path('html/error.html').read_text()
             else:
                 num = len(species)
                 if limit is not None:
-                    limit = int(limit)
                     species = species[:limit]
                 species_list = ""
                 for specie in species:
                     species_list += f"<li>{specie}</li>"
                 contents = read_html_file("species.html").render(
                     context={"species": species_list, "num": num, "limit": limit})
+
                 # make each word have a * and then submit into the html
 
         elif self.path.__contains__("karyotype"):
             arguments = parse_qs(url_path.query)
-            id = arguments.get("speciesK")[0]
-            karyotype_list = get_karyotype(id)
-            if karyotype_list is None:
+            id = None
+            karyotype_list = None
+            if len(arguments) > 0:
+                id = arguments.get("speciesK")[0]
+                karyotype_list = get_karyotype(id)
+            if karyotype_list is None or id is None or arguments is None:
                 contents = Path('html/error.html').read_text()
             else:
                 karyotypes = ""
@@ -283,19 +298,25 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
 
         elif self.path.__contains__("chromosomeLength"):
             arguments = parse_qs(url_path.query)
-            specie = arguments.get("speciesL")[0]
-            chrom = arguments.get("chromosome")[0]
-            chrom_len = get_chromosome_length(specie, chrom)
-            if (chrom_len is None):
+            if len(arguments) < 2:
                 contents = Path('html/error.html').read_text()
             else:
-                contents = read_html_file("length.html").render(context={"chromosomeLength": chrom_len})
+                specie = arguments.get("speciesL")[0]
+                chrom = arguments.get("chromosome")[0]
+                chrom_len = get_chromosome_length(specie, chrom)
+                if chrom_len is None or specie is None or chrom is None:
+                    contents = Path('html/error.html').read_text()
+                else:
+                    contents = read_html_file("length.html").render(context={"chromosomeLength": chrom_len})
 
         elif self.path.__contains__("geneSeq"):
             arguments = parse_qs(url_path.query)
-            geneToGet = arguments.get("gene")[0]
-            gotten_gene = get_gene(geneToGet)
-            if gotten_gene is None:
+            geneToGet = None
+            gotten_gene = None
+            if len(arguments) > 0:
+                geneToGet = arguments.get("gene")[0]
+                gotten_gene = get_gene(geneToGet)
+            if gotten_gene is None or geneToGet is None or arguments is None:
                 contents = Path('html/error.html').read_text()
             else:
                 seq = get_seq(gotten_gene)
@@ -303,30 +324,42 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
 
         elif self.path.__contains__("geneInfo"):
             arguments = parse_qs(url_path.query)
-            gene_to_get = arguments.get("geneI")[0]
-            gotten_gene = get_gene(gene_to_get)
-            seq = get_seq(gotten_gene)
-            length = len(seq)
-            info = get_gene_info(gotten_gene)
-            start = info[0]
-            end = info[1]
-            chromosome = info[2]
-            contents = read_html_file("gene_info.html").render(context={"start": start, "end": end, "length": length, "chromosome": chromosome, "id":gotten_gene})
+            gene_to_get = None
+            gotten_gene = None
+            if len(arguments) > 0:
+                gene_to_get = arguments.get("geneI")[0]
+                gotten_gene = get_gene(gene_to_get)
+            if gotten_gene is None or gene_to_get is None or arguments is None:
+                contents = Path('html/error.html').read_text()
+            else:
+                seq = get_seq(gotten_gene)
+                length = len(seq)
+                info = get_gene_info(gotten_gene)
+                start = info[0]
+                end = info[1]
+                chromosome = info[2]
+                contents = read_html_file("gene_info.html").render(context={"start": start, "end": end, "length": length, "chromosome": chromosome, "id":gotten_gene})
 
         elif self.path.__contains__("geneCalc"):
             bases = {}
             arguments = parse_qs(url_path.query)
-            gene_to_get = arguments.get("geneC")[0]
-            gotten_gene = get_gene(gene_to_get)
-            seq = get_seq(gotten_gene)
-            s = Seq(seq)
-            length = len(seq)
-            i = 0
-            for base in "ATCG":
-                bases[i] = f"{base}: {s.count_base(base)}, ({s.count_base(base) / s.len() * 100}%)"
-                i += 1
-            contents = read_html_file("gene_calc.html").render(
-                context={"seqLen": length, "countBase": bases})
+            gene_to_get = None
+            gotten_gene = None
+            if len(arguments) > 0:
+                gene_to_get = arguments.get("geneC")[0]
+                gotten_gene = get_gene(gene_to_get)
+            if gotten_gene is None or gene_to_get is None or arguments is None:
+                contents = Path('html/error.html').read_text()
+            else:
+                seq = get_seq(gotten_gene)
+                s = Seq(seq)
+                length = len(seq)
+                i = 0
+                for base in "ATCG":
+                    bases[i] = f"{base}: {s.count_base(base)}, ({s.count_base(base) / s.len() * 100}%)"
+                    i += 1
+                contents = read_html_file("gene_calc.html").render(
+                    context={"seqLen": length, "countBase": bases})
         elif path == "/":
             # Open the form1.html file
             # Read the index from the file
