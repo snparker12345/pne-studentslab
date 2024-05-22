@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Species List</title>
+</head>
+<body>
+    <p>The start of the chromosome you selected is: {{context.startC}}</p>
+    <p>The end is: {{context.endC}}</p>
+    <p>The genes are: </p>
+         {% for gene in context.genes  %}
+         <p>{{ context.genes[gene] }}</p>
+        {% endfor %}
+</body>
+</html>

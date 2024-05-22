@@ -15,14 +15,14 @@
 
     <form action="/karyotype" method="get">
         <p>2) Information about the karyotype</p>
-        <p>Select the species: <input name="speciesK"></p>
+        <p>Select the species: <input name="species"></p>
         <button type="submit">Send</button>
     </form>
 
     <form action="/chromosomeLength" method="get">
         <p>3) Chromosome Length</p>
-        <p>Select the species: <input name="speciesL"></p>
-        <p>Select the chromosome: <input name="chromosome"></p>
+        <p>Select the species: <input name="species"></p>
+        <p>Select the chromosome: <input name="chromo"></p>
         <button type="submit">Send</button>
     </form>
 
@@ -34,13 +34,21 @@
 
     <form action="/geneInfo" method="get">
         <p>5) Gene information</p>
-        <p>Select the gene: <input name="geneI"></p>
+        <p>Select the gene: <input name="gene"></p>
         <button type="submit">Send</button>
     </form>
 
     <form action="/geneCalc" method="get">
         <p>6) Gene calculator</p>
-        <p>Select the gene: <input name="geneC"></p>
+        <p>Select the gene: <input name="gene"></p>
+        <button type="submit">Send</button>
+    </form>
+
+    <form action="/geneList" method="get">
+        <p>6) List of genes between start and end of the chromosome</p>
+        <p>Select the chromosome: <input name="chromo"></p>
+        <p>Select the start: <input name="startC"></p>
+        <p>Select the end: <input name="endC"></p>
         <button type="submit">Send</button>
     </form>
 

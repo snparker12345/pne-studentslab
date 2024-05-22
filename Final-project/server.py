@@ -237,6 +237,46 @@ def get_gene_info(gene):
         info = [start, end, chrom]
         return info
 
+
+def get_genes(chromosome, start, end):
+    SERVER = 'rest.ensembl.org'
+    ENDPOINT = '/overlap/region/human/'
+    PARAMS = '?feature=gene;content-type=application/json'
+    print(f"Server: {SERVER}")
+    request = ENDPOINT + chromosome + ":" + start + "-" + end + PARAMS
+
+    print()
+
+    # Connect with the server
+    conn = http.client.HTTPConnection(SERVER)
+
+    # -- Send the request message, using the GET method. We are
+    # -- requesting the main page (/)
+    try:
+        conn.request("GET", request)
+    except ConnectionRefusedError:
+        print("ERROR! Cannot connect to the Server")
+        exit()
+
+    # -- Read the response message from the server
+    r1 = conn.getresponse()
+
+    print(f"Response received!: {r1.status} {r1.reason}\n")
+
+    # -- Read the response's body
+    response = json.loads(r1.read().decode("utf-8"))
+    if response is None or isinstance(response, str):
+        return None
+    genes = {}
+    i = 0
+    for gene in response:
+        if isinstance(gene, str):
+            return None
+        genes[i] = gene.get('external_name')
+        i += 1
+    return genes
+
+
 class TestHandler(http.server.BaseHTTPRequestHandler):
 
     def do_GET(self):
@@ -270,6 +310,7 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
             else:
                 num = len(species)
                 if limit is not None:
+                    limit = int(limit)
                     species = species[:limit]
                 species_list = ""
                 for specie in species:
@@ -284,7 +325,7 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
             id = None
             karyotype_list = None
             if len(arguments) > 0:
-                id = arguments.get("speciesK")[0]
+                id = arguments.get("species")[0]
                 karyotype_list = get_karyotype(id)
             if karyotype_list is None or id is None or arguments is None:
                 contents = Path('html/error.html').read_text()
@@ -301,8 +342,8 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
             if len(arguments) < 2:
                 contents = Path('html/error.html').read_text()
             else:
-                specie = arguments.get("speciesL")[0]
-                chrom = arguments.get("chromosome")[0]
+                specie = arguments.get("species")[0]
+                chrom = arguments.get("chromo")[0]
                 chrom_len = get_chromosome_length(specie, chrom)
                 if chrom_len is None or specie is None or chrom is None:
                     contents = Path('html/error.html').read_text()
@@ -327,7 +368,7 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
             gene_to_get = None
             gotten_gene = None
             if len(arguments) > 0:
-                gene_to_get = arguments.get("geneI")[0]
+                gene_to_get = arguments.get("gene")[0]
                 gotten_gene = get_gene(gene_to_get)
             if gotten_gene is None or gene_to_get is None or arguments is None:
                 contents = Path('html/error.html').read_text()
@@ -346,7 +387,7 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
             gene_to_get = None
             gotten_gene = None
             if len(arguments) > 0:
-                gene_to_get = arguments.get("geneC")[0]
+                gene_to_get = arguments.get("gene")[0]
                 gotten_gene = get_gene(gene_to_get)
             if gotten_gene is None or gene_to_get is None or arguments is None:
                 contents = Path('html/error.html').read_text()
@@ -360,6 +401,27 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
                     i += 1
                 contents = read_html_file("gene_calc.html").render(
                     context={"seqLen": length, "countBase": bases})
+
+        elif self.path.__contains__("geneList"):
+            bases = {}
+            arguments = parse_qs(url_path.query)
+            start = None
+            end = None
+            chromosome = None
+            if len(arguments) == 3:
+                start = arguments.get("startC")[0]
+                end = arguments.get("endC")[0]
+                chromosome = arguments.get("chromo")[0]
+            if start is None or end is None or chromosome is None or arguments is None or chromosome is None:
+                contents = Path('html/error.html').read_text()
+            else:
+                genes = get_genes(chromosome, start, end)
+                if genes is None:
+                    contents = Path('html/error.html').read_text()
+                else:
+                    contents = read_html_file("gene_list.html").render(
+                        context={"genes": genes, "start": start, "end": end})
+
         elif path == "/":
             # Open the form1.html file
             # Read the index from the file
